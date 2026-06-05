@@ -21,7 +21,6 @@ Fast, themeable Angular skeleton loader for Angular 22 and Ionic Angular apps. U
 - Themeable with CSS custom properties
 - Motion-safe animations with `prefers-reduced-motion`
 - Tiny API for text, rect, circle, avatar, button, and image skeleton presets
-
 ## Install Angular Skeleton Loader
 
 ```bash
