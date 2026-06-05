@@ -75,6 +75,14 @@ export class ProfilePageModule {}
 | `radius` | `string \| number` | preset | Border radius |
 | `animate` | `'shimmer' \| 'pulse' \| 'wave' \| 'none'` | `shimmer` | Animation style |
 | `tint` | `string` | unset | Base color override |
+| `visible` | `boolean` | `false` | Shows projected content if true, hides placeholder |
+| `shimmerColors` | `string[]` | unset | Custom gradient colors for shimmer/wave |
+| `locations` | `number[]` | unset | Custom stops (0 to 1) for shimmer colors |
+| `duration` | `number` | unset | Animation duration in milliseconds |
+| `delay` | `number` | unset | Animation delay in milliseconds |
+| `reverse` | `boolean` | `false` | Reverses animation direction |
+| `stopAnimation` | `boolean` | `false` | Pauses/freezes running animation |
+
 
 ## Skeleton Loader Theming
 
@@ -110,6 +118,10 @@ npm run build -- ngxsmk-skeleton-loader
 cd dist/ngxsmk-skeleton-loader
 npm publish --access public
 ```
+
+## Author
+
+Developed and maintained by [Sachin Dilshan](https://www.sachindilshan.com/).
 
 ## License
 

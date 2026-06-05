@@ -1,7 +1,7 @@
 {
   "name": "ngxsmk-skeleton-loader",
-  "version": "1.0.1",
-  "description": "Angular skeleton loader for Angular 22 and Ionic apps with standalone, NgModule, SSR, shimmer, pulse, and wave placeholders",
+  "version": "1.1.0",
+  "description": "Angular skeleton loader for Angular 22 and Ionic apps with standalone, NgModule, SSR, shimmer, pulse, wave, and advanced custom gradients, speed, delay, direction, and visibility controls",
   "license": "MIT",
   "keywords": [
     "angular",
@@ -17,10 +17,14 @@
     "ssr",
     "standalone",
     "ngxsmk",
-    "component"
+    "component",
+    "custom-colors",
+    "reverse",
+    "animation-speed",
+    "visible"
   ],
   "author": "Sachin Dilshan <https://www.sachindilshan.com/>",
-  "homepage": "https://github.com/NGXSMK/ngxsmk-skeleton-loader#readme",
+  "homepage": "https://github.com/toozuuu/ngxsmk-skeleton-loader#readme",
   "bugs": {
     "url": "https://github.com/NGXSMK/ngxsmk-skeleton-loader/issues"
   },

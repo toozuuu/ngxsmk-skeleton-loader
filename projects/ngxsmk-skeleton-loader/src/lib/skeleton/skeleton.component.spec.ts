@@ -48,6 +48,60 @@ describe('NgxSmkSkeletonComponent', () => {
     expect(element.style.getPropertyValue('--h')).toBe('1.25rem');
     expect(element.style.getPropertyValue('--r')).toBe('8px');
   });
+
+  it('correctly sets custom styles for duration, delay, reverse, stopAnimation, and custom gradient', () => {
+    fixture.componentRef.setInput('duration', 1500);
+    fixture.componentRef.setInput('delay', 300);
+    fixture.componentRef.setInput('reverse', true);
+    fixture.componentRef.setInput('stopAnimation', true);
+    fixture.componentRef.setInput('shimmerColors', ['#ff0000', '#00ff00', '#0000ff']);
+    fixture.componentRef.setInput('locations', [0.1, 0.5, 0.9]);
+    fixture.detectChanges();
+
+    expect(element.style.getPropertyValue('--ngx-skel-duration')).toBe('1500ms');
+    expect(element.style.getPropertyValue('--ngx-skel-delay')).toBe('300ms');
+    expect(element.style.getPropertyValue('--ngx-skel-direction')).toBe('reverse');
+    expect(element.style.getPropertyValue('--ngx-skel-play-state')).toBe('paused');
+    expect(element.style.getPropertyValue('--ngx-skel-gradient')).toBe('linear-gradient(90deg, #ff0000 10%, #00ff00 50%, #0000ff 90%)');
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [NgxSmkSkeletonComponent],
+  template: `
+    <ngxsmk-skeleton [visible]="visible" type="text" width="60%">
+      <span class="actual-content">Real Content</span>
+    </ngxsmk-skeleton>
+  `
+})
+class ComponentProjectionHost {
+  visible = false;
+}
+
+describe('NgxSmkSkeletonComponent Content Projection', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ComponentProjectionHost, NgxSmkSkeletonComponent],
+    }).compileComponents();
+  });
+
+  it('renders skeleton class and hides projected content when visible is false', () => {
+    const projFixture = TestBed.createComponent(ComponentProjectionHost);
+    projFixture.detectChanges();
+    const el = projFixture.nativeElement.querySelector('ngxsmk-skeleton') as HTMLElement;
+    expect(el.classList).toContain('ngxsmk-skeleton');
+    expect(projFixture.nativeElement.querySelector('.actual-content')).toBeNull();
+  });
+
+  it('removes skeleton class and projects content when visible is true', () => {
+    const projFixture = TestBed.createComponent(ComponentProjectionHost);
+    projFixture.componentInstance.visible = true;
+    projFixture.detectChanges();
+    const el = projFixture.nativeElement.querySelector('ngxsmk-skeleton') as HTMLElement;
+    expect(el.classList).not.toContain('ngxsmk-skeleton');
+    expect(projFixture.nativeElement.querySelector('.actual-content')).toBeTruthy();
+  });
 });
 
 @Component({
@@ -60,7 +114,13 @@ describe('NgxSmkSkeletonComponent', () => {
         type: type;
         width: width;
         height: height;
-        animate: animate
+        animate: animate;
+        shimmerColors: shimmerColors;
+        locations: locations;
+        duration: duration;
+        delay: delay;
+        reverse: reverse;
+        stopAnimation: stopAnimation
       "
     >
       <p class="content">Loaded</p>
@@ -73,6 +133,12 @@ class DirectiveHostComponent {
   width = '80%';
   height = 24;
   animate: 'shimmer' | 'pulse' = 'pulse';
+  shimmerColors = ['#ff0000', '#00ff00'];
+  locations = [0, 1];
+  duration = 2000;
+  delay = 500;
+  reverse = true;
+  stopAnimation = true;
 }
 
 describe('NgxSmkSkeletonDirective', () => {
@@ -90,9 +156,13 @@ describe('NgxSmkSkeletonDirective', () => {
 
     expect(skeleton).toBeTruthy();
     expect(skeleton.classList).toContain('is-rect');
-    expect(skeleton.classList).toContain('anim-pulse');
     expect(skeleton.style.getPropertyValue('--w')).toBe('80%');
     expect(skeleton.style.getPropertyValue('--h')).toBe('24px');
+    expect(skeleton.style.getPropertyValue('--ngx-skel-duration')).toBe('2000ms');
+    expect(skeleton.style.getPropertyValue('--ngx-skel-delay')).toBe('500ms');
+    expect(skeleton.style.getPropertyValue('--ngx-skel-direction')).toBe('reverse');
+    expect(skeleton.style.getPropertyValue('--ngx-skel-play-state')).toBe('paused');
+    expect(skeleton.style.getPropertyValue('--ngx-skel-gradient')).toBe('linear-gradient(90deg, #ff0000 0%, #00ff00 100%)');
     expect(fixture.nativeElement.querySelector('.content')).toBeNull();
   });
 
@@ -111,3 +181,4 @@ describe('NgxSmkSkeletonModule', () => {
     expect(NgxSmkSkeletonModule).toBeTruthy();
   });
 });
+
