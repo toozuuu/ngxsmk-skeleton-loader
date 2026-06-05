@@ -1,9 +1,14 @@
-import {CommonModule} from '@angular/common';
 import {Component, HostBinding, Input} from '@angular/core';
+
+import {
+  NgxSmkSkeletonAnimation,
+  NgxSmkSkeletonDimension,
+  NgxSmkSkeletonType,
+} from './skeleton.types';
 
 
 /**
- * ngxsmk-skeleton — Standalone skeleton component.
+ * ngxsmk-skeleton - Standalone skeleton component.
  * Usage:
  * <ngxsmk-skeleton type="text" width="80%"></ngxsmk-skeleton>
  * <ngxsmk-skeleton type="circle" size="48"></ngxsmk-skeleton>
@@ -11,23 +16,22 @@ import {Component, HostBinding, Input} from '@angular/core';
 @Component({
   selector: 'ngxsmk-skeleton',
   standalone: true,
-  imports: [CommonModule],
   template: '',
   styleUrls: ['./skeleton.component.scss']
 })
 export class NgxSmkSkeletonComponent {
   /** visual preset */
-  @Input() type: 'text' | 'rect' | 'circle' | 'avatar' | 'button' | 'image' = 'text';
+  @Input() type: NgxSmkSkeletonType = 'text';
   /** width: accepts px/%, number treated as px */
-  @Input() width?: string | number;
+  @Input() width?: NgxSmkSkeletonDimension;
   /** height: accepts px/%, number treated as px */
-  @Input() height?: string | number;
+  @Input() height?: NgxSmkSkeletonDimension;
   /** size shortcut (applies to width & height if provided) */
-  @Input() size?: string | number;
+  @Input() size?: NgxSmkSkeletonDimension;
   /** border radius (e.g. 8, '8px', '9999px') */
-  @Input() radius?: string | number;
+  @Input() radius?: NgxSmkSkeletonDimension;
   /** animation style */
-  @Input() animate: 'shimmer' | 'pulse' | 'wave' | 'none' = 'shimmer';
+  @Input() animate: NgxSmkSkeletonAnimation = 'shimmer';
   /** base color & highlight overrides via CSS vars, but a fallback tint can be set */
   @Input() tint?: string; // e.g. #e5e7eb
 
@@ -82,10 +86,10 @@ export class NgxSmkSkeletonComponent {
   }
 
 
-  private unit(v: string | number): string {
+  private unit(v: NgxSmkSkeletonDimension): string {
     if (typeof v === 'number') return `${v}px`;
     // if it's a numeric string, add px
-    return /^\d+(\.\d+)?$/.test(v) ? `${v}px` : v;
+    return /^-?\d+(\.\d+)?$/.test(v.trim()) ? `${v}px` : v;
   }
 
 }

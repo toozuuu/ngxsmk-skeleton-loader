@@ -1,8 +1,24 @@
-import {Directive, Input, TemplateRef, ViewContainerRef} from '@angular/core';
+import {
+  ComponentRef,
+  Directive,
+  EmbeddedViewRef,
+  Input,
+  OnChanges,
+  TemplateRef,
+  ViewContainerRef,
+  booleanAttribute,
+} from '@angular/core';
+
+import {NgxSmkSkeletonComponent} from './skeleton.component';
+import {
+  NgxSmkSkeletonAnimation,
+  NgxSmkSkeletonDimension,
+  NgxSmkSkeletonType,
+} from './skeleton.types';
 
 
 /**
- * *ngxsmkSkeleton — structural directive to toggle a skeleton placeholder
+ * *ngxsmkSkeleton - structural directive to toggle a skeleton placeholder
  *
  * Example:
  * <ng-container *ngxsmkSkeleton="loading; type: 'text'; width: '80%'"></ng-container>
@@ -11,47 +27,48 @@ import {Directive, Input, TemplateRef, ViewContainerRef} from '@angular/core';
   selector: '[ngxsmkSkeleton]',
   standalone: true
 })
-export class NgxSmkSkeletonDirective {
-  @Input('ngxsmkSkeleton') set loading(v: boolean) {
-    this._loading = v;
-    this.updateView();
-  }
+export class NgxSmkSkeletonDirective implements OnChanges {
+  @Input({alias: 'ngxsmkSkeleton', transform: booleanAttribute}) loading = false;
 
 
-  @Input('ngxsmkSkeletonType') type: 'text' | 'rect' | 'circle' | 'avatar' | 'button' | 'image' = 'text';
-  @Input('ngxsmkSkeletonWidth') width?: string | number;
-  @Input('ngxsmkSkeletonHeight') height?: string | number;
-  @Input('ngxsmkSkeletonSize') size?: string | number;
-  @Input('ngxsmkSkeletonRadius') radius?: string | number;
-  @Input('ngxsmkSkeletonAnimate') animate: 'shimmer' | 'pulse' | 'wave' | 'none' = 'shimmer';
+  @Input('ngxsmkSkeletonType') type: NgxSmkSkeletonType = 'text';
+  @Input('ngxsmkSkeletonWidth') width?: NgxSmkSkeletonDimension;
+  @Input('ngxsmkSkeletonHeight') height?: NgxSmkSkeletonDimension;
+  @Input('ngxsmkSkeletonSize') size?: NgxSmkSkeletonDimension;
+  @Input('ngxsmkSkeletonRadius') radius?: NgxSmkSkeletonDimension;
+  @Input('ngxsmkSkeletonAnimate') animate: NgxSmkSkeletonAnimation = 'shimmer';
 
-
-  private _loading = false;
-  private skeletonEl?: HTMLElement;
+  private skeletonRef?: ComponentRef<NgxSmkSkeletonComponent>;
+  private contentRef?: EmbeddedViewRef<unknown>;
 
 
   constructor(private readonly tpl: TemplateRef<unknown>, private readonly vcr: ViewContainerRef) {
   }
 
+  ngOnChanges(): void {
+    this.updateView();
+  }
 
   private updateView() {
-    this.vcr.clear();
-    if (this._loading) {
-      const el = document.createElement('ngxsmk-skeleton');
-      if (this.type) el.setAttribute('type', this.type);
-      if (this.animate) el.setAttribute('animate', this.animate);
-      if (this.size != null) el.setAttribute('size', String(this.size));
-      if (this.width != null) el.setAttribute('width', String(this.width));
-      if (this.height != null) el.setAttribute('height', String(this.height));
-      if (this.radius != null) el.setAttribute('radius', String(this.radius));
-      this.vcr.element.nativeElement.insertAdjacentElement('beforebegin', el);
-      this.skeletonEl = el;
-    } else {
-      if (this.skeletonEl) {
-        this.skeletonEl.remove();
-        this.skeletonEl = undefined;
+    if (this.loading) {
+      if (!this.skeletonRef) {
+        this.vcr.clear();
+        this.contentRef = undefined;
+        this.skeletonRef = this.vcr.createComponent(NgxSmkSkeletonComponent);
       }
-      this.vcr.createEmbeddedView(this.tpl);
+
+      this.skeletonRef.setInput('type', this.type);
+      this.skeletonRef.setInput('animate', this.animate);
+      this.skeletonRef.setInput('size', this.size);
+      this.skeletonRef.setInput('width', this.width);
+      this.skeletonRef.setInput('height', this.height);
+      this.skeletonRef.setInput('radius', this.radius);
+    } else {
+      if (!this.contentRef) {
+        this.vcr.clear();
+        this.skeletonRef = undefined;
+        this.contentRef = this.vcr.createEmbeddedView(this.tpl);
+      }
     }
   }
 }
