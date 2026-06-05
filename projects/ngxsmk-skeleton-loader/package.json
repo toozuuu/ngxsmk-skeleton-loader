@@ -1,6 +1,6 @@
 {
   "name": "ngxsmk-skeleton-loader",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Angular skeleton loader for Angular 22 and Ionic apps with standalone, NgModule, SSR, shimmer, pulse, wave, and advanced custom gradients, speed, delay, direction, and visibility controls",
   "license": "MIT",
   "keywords": [
