@@ -1,6 +1,7 @@
 {
   "name": "skeleton-workspace",
   "version": "1.1.0",
+  "author": "Sachin Dilshan <https://www.sachindilshan.com/>",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
