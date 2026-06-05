@@ -1,17 +1,36 @@
 {
   "name": "ngxsmk-skeleton-loader",
   "version": "1.0.1",
-  "description": "Angular 17+ standalone skeleton loader (component + directive, SCSS, shimmer/pulse/wave)",
+  "description": "Angular skeleton loader for Angular 22 and Ionic apps with standalone, NgModule, SSR, shimmer, pulse, and wave placeholders",
   "license": "MIT",
-  "keywords": ["angular", "skeleton", "loader", "shimmer", "ngxsmk", "component"],
+  "keywords": [
+    "angular",
+    "angular-22",
+    "ionic",
+    "ionic-angular",
+    "skeleton",
+    "skeleton-loader",
+    "loading-placeholder",
+    "placeholder",
+    "shimmer",
+    "pulse",
+    "ssr",
+    "standalone",
+    "ngxsmk",
+    "component"
+  ],
+  "author": "toozuuu",
+  "homepage": "https://github.com/toozuuu/ngxsmk-skeleton-loader#readme",
+  "bugs": {
+    "url": "https://github.com/toozuuu/ngxsmk-skeleton-loader/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toozuuu/ngxsmk-skeleton-loader"
+    "url": "git+https://github.com/toozuuu/ngxsmk-skeleton-loader.git"
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@angular/common": ">=17 <20",
-    "@angular/core": ">=17 <20"
+    "@angular/core": ">=22 <23"
   },
   "ngPackage": {
     "lib": {
