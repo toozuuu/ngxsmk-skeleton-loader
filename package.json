@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build-ngxsmk-skeleton-loader": "ng build ngxsmk-skeleton-loader",
+    "build-ngxsmk-skeleton-demo": "ng build ngxsmk-skeleton-demo",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ngxsmk-skeleton-demo": "node dist/ngxsmk-skeleton-demo/server/server.mjs"
