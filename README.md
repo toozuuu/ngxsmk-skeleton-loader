@@ -119,6 +119,10 @@ cd dist/ngxsmk-skeleton-loader
 npm publish --access public
 ```
 
+## Author
+
+Developed and maintained by [Sachin Dilshan](https://www.sachindilshan.com/).
+
 ## License
 
 MIT
