@@ -7,6 +7,11 @@ Fast, themeable Angular skeleton loader for Angular 22 and Ionic Angular apps. U
 ![angular version](https://img.shields.io/badge/angular-22-red)
 ![license](https://img.shields.io/badge/license-MIT-blue)
 
+## Preview
+
+![Shimmer Animations Preview](assets/1.gif)
+![Layout Mockups Preview](assets/2.gif)
+
 ## Angular Skeleton Loader Features
 
 - Standalone Angular component and structural directive
