@@ -38,6 +38,13 @@ export class NgxSmkSkeletonDirective implements OnChanges {
   @Input('ngxsmkSkeletonRadius') radius?: NgxSmkSkeletonDimension;
   @Input('ngxsmkSkeletonAnimate') animate: NgxSmkSkeletonAnimation = 'shimmer';
 
+  @Input('ngxsmkSkeletonShimmerColors') shimmerColors?: string[];
+  @Input('ngxsmkSkeletonLocations') locations?: number[];
+  @Input('ngxsmkSkeletonDuration') duration?: number;
+  @Input('ngxsmkSkeletonDelay') delay?: number;
+  @Input({alias: 'ngxsmkSkeletonReverse', transform: booleanAttribute}) reverse = false;
+  @Input({alias: 'ngxsmkSkeletonStopAnimation', transform: booleanAttribute}) stopAnimation = false;
+
   private skeletonRef?: ComponentRef<NgxSmkSkeletonComponent>;
   private contentRef?: EmbeddedViewRef<unknown>;
 
@@ -63,6 +70,12 @@ export class NgxSmkSkeletonDirective implements OnChanges {
       this.skeletonRef.setInput('width', this.width);
       this.skeletonRef.setInput('height', this.height);
       this.skeletonRef.setInput('radius', this.radius);
+      this.skeletonRef.setInput('shimmerColors', this.shimmerColors);
+      this.skeletonRef.setInput('locations', this.locations);
+      this.skeletonRef.setInput('duration', this.duration);
+      this.skeletonRef.setInput('delay', this.delay);
+      this.skeletonRef.setInput('reverse', this.reverse);
+      this.skeletonRef.setInput('stopAnimation', this.stopAnimation);
     } else {
       if (!this.contentRef) {
         this.vcr.clear();
@@ -72,3 +85,4 @@ export class NgxSmkSkeletonDirective implements OnChanges {
     }
   }
 }
+
