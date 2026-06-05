@@ -1,4 +1,4 @@
-import {Component, HostBinding, Input} from '@angular/core';
+import {Component, HostBinding, Input, booleanAttribute} from '@angular/core';
 
 import {
   NgxSmkSkeletonAnimation,
@@ -16,7 +16,11 @@ import {
 @Component({
   selector: 'ngxsmk-skeleton',
   standalone: true,
-  template: '',
+  template: `
+    @if (visible) {
+      <ng-content></ng-content>
+    }
+  `,
   styleUrls: ['./skeleton.component.scss']
 })
 export class NgxSmkSkeletonComponent {
@@ -35,33 +39,50 @@ export class NgxSmkSkeletonComponent {
   /** base color & highlight overrides via CSS vars, but a fallback tint can be set */
   @Input() tint?: string; // e.g. #e5e7eb
 
+  /** toggle visibility to display projected content instead of the placeholder */
+  @Input({transform: booleanAttribute}) visible = false;
+  /** custom shimmer colors for the gradient */
+  @Input() shimmerColors?: string[];
+  /** color stops for the custom gradient */
+  @Input() locations?: number[];
+  /** custom animation duration in ms */
+  @Input() duration?: number;
+  /** custom animation delay in ms */
+  @Input() delay?: number;
+  /** reverse animation direction */
+  @Input({transform: booleanAttribute}) reverse = false;
+  /** freeze/pause animation */
+  @Input({transform: booleanAttribute}) stopAnimation = false;
 
-  @HostBinding('class.ngxsmk-skeleton') baseClass = true;
+
+  @HostBinding('class.ngxsmk-skeleton') get baseClass() {
+    return !this.visible;
+  }
 
 
   @HostBinding('class.is-rect') get isRect() {
-    return this.type === 'rect' || this.type === 'image' || this.type === 'button';
+    return !this.visible && (this.type === 'rect' || this.type === 'image' || this.type === 'button');
   }
 
   @HostBinding('class.is-text') get isText() {
-    return this.type === 'text';
+    return !this.visible && this.type === 'text';
   }
 
   @HostBinding('class.is-circle') get isCircle() {
-    return this.type === 'circle' || this.type === 'avatar';
+    return !this.visible && (this.type === 'circle' || this.type === 'avatar');
   }
 
 
   @HostBinding('class.anim-shimmer') get cShimmer() {
-    return this.animate === 'shimmer';
+    return !this.visible && this.animate === 'shimmer';
   }
 
   @HostBinding('class.anim-pulse') get cPulse() {
-    return this.animate === 'pulse';
+    return !this.visible && this.animate === 'pulse';
   }
 
   @HostBinding('class.anim-wave') get cWave() {
-    return this.animate === 'wave';
+    return !this.visible && this.animate === 'wave';
   }
 
 
@@ -70,6 +91,9 @@ export class NgxSmkSkeletonComponent {
 
 
   @HostBinding('style') get styleMap() {
+    if (this.visible) {
+      return '';
+    }
     const w = this.size ?? this.width;
     const h = this.size ?? this.height;
     const r = this.radius ?? (this.isCircle ? '9999px' : undefined);
@@ -81,6 +105,18 @@ export class NgxSmkSkeletonComponent {
     if (r != null) style['--r'] = this.unit(r);
     if (this.tint) style['--ngx-skel-base'] = this.tint;
 
+    if (this.duration != null) style['--ngx-skel-duration'] = `${this.duration}ms`;
+    if (this.delay != null) style['--ngx-skel-delay'] = `${this.delay}ms`;
+    if (this.reverse) style['--ngx-skel-direction'] = 'reverse';
+    if (this.stopAnimation) style['--ngx-skel-play-state'] = 'paused';
+
+    if (this.shimmerColors && this.shimmerColors.length > 0) {
+      const gradientParts = this.shimmerColors.map((color, idx) => {
+        const stop = this.locations?.[idx] != null ? ` ${this.locations[idx] * 100}%` : '';
+        return `${color}${stop}`;
+      });
+      style['--ngx-skel-gradient'] = `linear-gradient(90deg, ${gradientParts.join(', ')})`;
+    }
 
     return Object.entries(style).map(([k, v]) => `${k}:${v}`).join(';');
   }
